@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lexia</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Italiana&family=Inter:wght@300;400;600&display=swap');
+
+    :root {
+      --bg: #f4efea;
+      /* Warm beige from reference */
+      --text: #2c2926;
+      /* Deep charcoal/brown */
+      --text-soft: #6b6359;
+      --accent: #4a443f;
+      /* Earthy brown */
+      --danger: #9d3a2e;
+      --warning: #b38520;
+      --success: #3e5a40;
+      --border: rgba(44, 41, 38, 0.1);
+    }
+
+    body {
+      width: 420px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 32px;
+      line-height: 1.6;
+    }
+
+    .header {
+      margin-bottom: 48px;
+    }
+
+    .brand {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: 'Italiana', serif;
+      font-size: 2.8rem;
+      font-weight: 400;
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .version {
+      font-size: 0.6rem;
+      font-weight: 600;
+      opacity: 0.5;
+      margin-top: 4px;
+    }
+
+    /* Score Section */
+    .score-banner {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .score-big {
+      font-family: 'Italiana', serif;
+      font-size: 4rem;
+      line-height: 0.8;
+    }
+
+    .score-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-soft);
+    }
+
+    /* Action Button */
+    .btn-action {
+      font-family: 'Inter', sans-serif;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      padding: 16px 24px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      width: fit-content;
+      margin-bottom: 48px;
+    }
+
+    .btn-action:hover {
+      opacity: 0.9;
+    }
+
+    .btn-action:disabled {
+      background: var(--text-soft);
+      cursor: not-allowed;
+    }
+
+    /* Results List */
+    .category-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-soft);
+      margin-top: 40px;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .result-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px dashed var(--border);
+      align-items: center;
+    }
+
+    .result-row:last-child {
+      border-bottom: none;
+    }
+
+    .check-title {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .check-desc {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .status-marker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-crit {
+      color: var(--danger);
+    }
+
+    .status-warn {
+      color: var(--warning);
+    }
+
+    .status-ok {
+      color: var(--success);
+    }
+
+    #results {
+      display: none;
+    }
+
+    footer {
+      margin-top: 64px;
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      opacity: 0.6;
+    }
+
+    /* Loading */
+    .loading-dots:after {
+      content: ' .';
+      animation: dots 1.5s steps(5, end) infinite;
+    }
+
+    @keyframes dots {
+
+      0%,
+      20% {
+        color: rgba(0, 0, 0, 0);
+        text-shadow: .2em 0 0 rgba(0, 0, 0, 0), .4em 0 0 rgba(0, 0, 0, 0);
+      }
+
+      40% {
+        color: var(--bg);
+        text-shadow: .2em 0 0 rgba(0, 0, 0, 0), .4em 0 0 rgba(0, 0, 0, 0);
+      }
+
+      60% {
+        text-shadow: .2em 0 0 var(--bg), .4em 0 0 rgba(0, 0, 0, 0);
+      }
+
+      80%,
+      100% {
+        text-shadow: .2em 0 0 var(--bg), .4em 0 0 var(--bg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="brand">Compliance Toolkit</div>
+    <h1>Lexia</h1>
+    <div class="version">Compliance. Refined.</div>
+  </div>
+
+  <button id="scanBtn" class="btn-action">Start Analysis</button>
+
+  <div id="results">
+    <div class="score-banner">
+      <div id="scoreValue" class="score-big">--</div>
+      <div class="score-label">Compliance Index</div>
+    </div>
+
+    <div id="resultContent">
+      <span class="category-label">Critical Findings</span>
+      <div id="criticalList"></div>
+
+      <span class="category-label">Warnings</span>
+      <div id="warningList"></div>
+
+      <span class="category-label">Validated</span>
+      <div id="successList"></div>
+    </div>
+  </div>
+
+  <footer>
+    Lexia | Precision Digital Audit
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>
