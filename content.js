@@ -74,7 +74,7 @@ function performGDPRScan() {
     }
 
     // --- 3. CDN & EXTERNAL HOSTS (New v2.0) ---
-    const cdnPatterns = ['cdnjs.cloudflare.com', 'unpkg.com', 'jsdelivr.net', 'bootstrapcdn.com', 'ajax.googleapis.com'];
+    const cdnPatterns = ['cdnjs.cloudflare.com', 'unpkg.com', 'jsdelivr.net', 'bootstrapcdn.com', 'ajax.googleapis.com', 'cloudfront.net'];
     let foundCDNs = [];
     resources.forEach(res => {
         cdnPatterns.forEach(p => {
